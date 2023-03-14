@@ -2,7 +2,42 @@ fileFormatVersion: 2
 guid: 266738adedb0f704da63ea9f73cbfa1e
 ScriptedImporter:
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ddmo_body_MAT
+    second: {fileID: 2100000, guid: 972054fb232bb3a44b3daf9cc316efac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ddmo_clothing_MAT
+    second: {fileID: 2100000, guid: cc8b1dfadd076aa4d920130e7df2091f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ddmo_eyeLeft_MAT
+    second: {fileID: 2100000, guid: 8eef1a9ac8c1a2f40a58bcfedbc52179, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ddmo_eyeRight_MAT
+    second: {fileID: 2100000, guid: 690d8b06f1ec60e4196113666343a410, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ddmo_eyelashes_MAT
+    second: {fileID: 2100000, guid: 83c749fd1c15b8044a37f48153841c20, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ddmo_head_MAT
+    second: {fileID: 2100000, guid: cecd2743af51edc47a1db3e0c17e6c11, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ddmo_mouth_MAT
+    second: {fileID: 2100000, guid: ca27b1e41d619514aa55f4dddc14552a, type: 2}
   serializedVersion: 2
   userData: 
   assetBundleName: 
@@ -16,5 +51,5 @@ ScriptedImporter:
     tangents: 0
     animationType: 1
     avatarDefinition: 1
-    avatar: {instanceID: 0}
+    avatar: {fileID: -8473373598174160398, guid: 266738adedb0f704da63ea9f73cbfa1e, type: 3}
     isDidimo: 1
