@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float m_MoveSpeed = 10.0f;
-    public float m_TurnSpeed = 25.0f;
-    public float m_HorizontalInput;
-    public float m_ForwardInput;
+    [SerializeField]
+    private GameObject m_Model;
+    [SerializeField]
+    private float m_MoveSpeed, m_TurnSpeed, m_HorizontalInput, m_VerticalInput;
 
     //Animations
     public Animator m_Anim;
     private bool m_IsMoving;
     private bool m_IsStill;
-    private bool m_IsTurning;
+    private bool m_IsSwappingDirection;
 
 
     // Start is called before the first frame update
@@ -27,20 +27,52 @@ public class PlayerController : MonoBehaviour
     {
         //This is where we get player input
         m_HorizontalInput = Input.GetAxis("Horizontal");
-        m_ForwardInput = Input.GetAxis("Vertical");
+        m_VerticalInput = Input.GetAxis("Vertical");
 
-        //We'll move the vehicle forward
-        transform.Translate(Vector3.forward * Time.deltaTime * m_MoveSpeed * m_ForwardInput);
-        //We'll turn the vehicle
-        transform.Rotate(Vector3.up, Time.deltaTime * m_TurnSpeed * m_HorizontalInput);
+        //Move the player in the direction they are facing
+        Vector3 moveDirection = new Vector3(m_HorizontalInput, 0, m_VerticalInput);
+        moveDirection.Normalize();
+
+        transform.Translate(moveDirection * m_MoveSpeed * Time.deltaTime, Space.World);
+
+        if (moveDirection != Vector3.zero)
+        {
+            //Rotate the player to face the direction they are moving
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_TurnSpeed * Time.deltaTime);
+        }
 
         //Animations
-        m_IsMoving = m_ForwardInput != 0;
-        m_IsStill = m_ForwardInput == 0;
-        m_IsTurning = m_HorizontalInput != 0;
+        if (m_VerticalInput != 0 || m_HorizontalInput != 0)
+        {
+            m_IsMoving = true;
+            m_Anim.SetBool("IsMoving", true);
+        }
+        else
+        {
+            m_IsMoving = false;
+        }
 
-        m_Anim.SetBool("IsMoving", m_IsMoving);
-        m_Anim.SetBool("IsStill", m_IsStill);
-        m_Anim.SetBool("IsTurning", m_IsTurning);
+        if (m_VerticalInput == 0 || m_HorizontalInput == 0)
+        {
+            m_IsStill = true;
+        }
+        else
+        {
+            m_IsStill = false;
+        }
+
+        if (transform.rotation.y == 180 && m_HorizontalInput == 1)
+        {
+            m_IsSwappingDirection = true;
+        }
+        else if (transform.rotation.y == 0 && m_HorizontalInput == -1)
+        {
+            m_IsSwappingDirection = true;
+        }
+        else
+        {
+            m_IsSwappingDirection = false;
+        }
     }
 }
