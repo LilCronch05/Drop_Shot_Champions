@@ -7,14 +7,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject m_Model;
     [SerializeField]
-    private float m_MoveSpeed, m_TurnSpeed, m_HorizontalInput, m_VerticalInput;
+    private float m_MoveSpeed, m_TurnSpeed, m_HorizontalInput, m_VerticalInput, m_HorizontalAimInput, m_VerticalAimInput;
 
     //Animations
     public Animator m_Anim;
-    private bool m_IsMoving;
-    private bool m_IsStill;
-    private bool m_IsSwappingDirection;
 
+    CourtManager m_CourtManager;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +26,8 @@ public class PlayerController : MonoBehaviour
         //This is where we get player input
         m_HorizontalInput = Input.GetAxis("Horizontal");
         m_VerticalInput = Input.GetAxis("Vertical");
+        m_HorizontalAimInput = Input.GetAxis("HorizontalAim");
+        m_VerticalAimInput = Input.GetAxis("VerticalAim");
 
         //Move the player in the direction they are facing
         Vector3 moveDirection = new Vector3(m_HorizontalInput, 0, m_VerticalInput);
@@ -45,34 +45,49 @@ public class PlayerController : MonoBehaviour
         //Animations
         if (m_VerticalInput != 0 || m_HorizontalInput != 0)
         {
-            m_IsMoving = true;
             m_Anim.SetBool("IsMoving", true);
         }
         else
         {
-            m_IsMoving = false;
+            m_Anim.SetBool("IsMoving", false);
         }
 
         if (m_VerticalInput == 0 || m_HorizontalInput == 0)
         {
-            m_IsStill = true;
-        }
-        else
-        {
-            m_IsStill = false;
+
+            m_Anim.SetBool("IsStill", true);
         }
 
         if (transform.rotation.y == 180 && m_HorizontalInput == 1)
         {
-            m_IsSwappingDirection = true;
+            m_Anim.SetBool("IsSwappingDirection", true);
         }
         else if (transform.rotation.y == 0 && m_HorizontalInput == -1)
         {
-            m_IsSwappingDirection = true;
+            m_Anim.SetBool("IsSwappingDirection", true);
         }
-        else
+
+        if (m_VerticalAimInput == 0)
         {
-            m_IsSwappingDirection = false;
+            if (m_HorizontalInput > 0 && Input.GetButtonDown("Fire1"))
+            {
+                m_Anim.SetBool("IsDivingRight", true);
+            }
+            else if (m_HorizontalInput < 0 && Input.GetButtonDown("Fire1"))
+            {
+                m_Anim.SetBool("IsDivingLeft", true);
+            }
+            else
+            {
+                m_Anim.SetBool("IsDivingRight", false);
+                m_Anim.SetBool("IsDivingLeft", false);
+            }
         }
+
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(5);
     }
 }
