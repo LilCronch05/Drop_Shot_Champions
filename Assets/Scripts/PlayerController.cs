@@ -84,6 +84,40 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (m_VerticalAimInput > 0)
+        {
+            if (m_HorizontalInput > 0 && Input.GetButtonDown("Fire1"))
+            {
+                m_Anim.SetBool("IsBumpingRight", true);
+            }
+            else if (m_HorizontalInput < 0 && Input.GetButtonDown("Fire1"))
+            {
+                m_Anim.SetBool("IsBumpingLeft", true);
+            }
+            else
+            {
+                m_Anim.SetBool("IsBumpingRight", false);
+                m_Anim.SetBool("IsBumpingLeft", false);
+            }
+        }
+
+        if (m_VerticalAimInput < 0)
+        {
+            if (m_HorizontalInput > 0 && Input.GetButtonDown("Fire1"))
+            {
+                m_Anim.SetBool("IsJumpingRight", true);
+            }
+            else if (m_HorizontalInput < 0 && Input.GetButtonDown("Fire1"))
+            {
+                m_Anim.SetBool("IsJumpingLeft", true);
+            }
+            else
+            {
+                m_Anim.SetBool("IsJumpingRight", false);
+                m_Anim.SetBool("IsJumpingLeft", false);
+            }
+        }
+
     }
 
     IEnumerator Wait()
