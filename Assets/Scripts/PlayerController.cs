@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_TurnSpeed * Time.deltaTime);
         }
 
-        //Animations
+        //ANIMATIONS
         if (m_VerticalInput != 0 || m_HorizontalInput != 0)
         {
             m_Anim.SetBool("IsMoving", true);
