@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject m_Model;
     [SerializeField]
-    private float m_MoveSpeed, m_TurnSpeed, m_HorizontalInput, m_VerticalInput, m_HorizontalAimInput, m_VerticalAimInput;
+    public float m_MoveSpeed, m_TurnSpeed, m_HorizontalInput, m_VerticalInput, m_HorizontalAimInput, m_VerticalAimInput;
 
     //Animations
     public Animator m_Anim;
