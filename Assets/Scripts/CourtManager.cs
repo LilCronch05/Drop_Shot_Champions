@@ -12,4 +12,12 @@ public class CourtManager : MonoBehaviour
     public GameObject[] m_AwayZones;
     [SerializeField]
     public GameObject[] m_OutZones;
+
+    void OnColliderEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Birdie")
+        {
+            m_Player1 = other.gameObject;
+        }
+    }
 }

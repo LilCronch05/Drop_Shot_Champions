@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Birdie : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class Birdie : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 m_HitDirection = new Vector3(m_PlayerHit.m_HorizontalAimInput, 0, 1);
+        Vector3 m_HitDirection = new Vector3(Gamepad.all[0].rightStick.ReadValue().x, 0, 1);
         
         if (m_CourtZone != null)
         {
