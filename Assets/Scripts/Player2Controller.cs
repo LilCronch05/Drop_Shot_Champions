@@ -5,11 +5,12 @@ using UnityEngine.InputSystem;
 
 public class Player2Controller : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject m_Model;
+    [SerializeField] private GameObject m_Model;
+    [SerializeField] private Transform m_Birdie;
+    [SerializeField] private float m_HitSpeed = 3f, m_HitForce = 10f, m_HitHeight;
     [SerializeField]
     public float m_MoveSpeed, m_TurnSpeed, m_HorizontalInput, m_VerticalInput, m_HorizontalAimInput, m_VerticalAimInput;
-
+    [SerializeField] private bool m_Hitting, m_CanHit;
     //Animations
     public Animator m_Anim;
 
@@ -24,7 +25,7 @@ public class Player2Controller : MonoBehaviour
             Debug.Log(Gamepad.all[i].name);
         }
 
-        m_Model = GameObject.Find("Player2");
+        m_Model = GameObject.Find("Player1");
     }
 
     // Update is called once per frame
@@ -45,10 +46,33 @@ public class Player2Controller : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_TurnSpeed * Time.deltaTime);
         }
 
-        if (Gamepad.all[0].rightTrigger.isPressed)
+        if (m_CanHit)
         {
-            m_MoveSpeed = 0;
+            if (Gamepad.all[0].rightTrigger.isPressed)
+            {
+                m_Hitting = true;
+            }
+            else if (Gamepad.all[0].rightTrigger.isPressed == false)
+            {
+                m_Hitting = false;
+            }
+
+            if (m_Hitting)
+            {
+                Vector3 m_HitDirection = m_Birdie.position - transform.position;
+                m_Birdie.Translate(new Vector3(Gamepad.all[0].rightStick.ReadValue().x, 0, 0) * m_HitSpeed * Time.deltaTime, Space.World);
+                m_Birdie.GetComponent<Rigidbody>().velocity = m_HitDirection.normalized * m_HitForce + new Vector3(0, m_HitHeight, 0);
+
+            }
+
+            if ((Gamepad.all[0].rightStick.ReadValue().x != 0 || Gamepad.all[0].rightStick.ReadValue().y != 0) && !m_Hitting)
+            {
+                m_Birdie.Translate(new Vector3(Gamepad.all[0].rightStick.ReadValue().x, 0, Gamepad.all[0].rightStick.ReadValue().y) * m_HitSpeed * Time.deltaTime, Space.World);
+            }
         }
+
+        
+
 
         //ANIMATIONS
         if (Gamepad.all[0].leftStick.ReadValue().x != 0 || Gamepad.all[0].leftStick.ReadValue().y != 0)
@@ -77,55 +101,80 @@ public class Player2Controller : MonoBehaviour
 
         if (Gamepad.all[0].rightStick.ReadValue().y == 0)
         {
-            if (Gamepad.all[0].leftStick.right.isPressed && Gamepad.all[0].rightTrigger.isPressed)
-            {
-                m_Anim.SetBool("IsDivingRight", true);
-            }
-            else if (Gamepad.all[0].leftStick.left.isPressed && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
-            {
-                m_Anim.SetBool("IsDivingLeft", true);
-            }
-            else
-            {
-                m_Anim.SetBool("IsDivingRight", false);
-                m_Anim.SetBool("IsDivingLeft", false);
-            }
-        }
+            m_HitForce = 10;
+            m_HitHeight = 9;
 
-        if (Gamepad.all[0].rightStick.up.isPressed)
-        {
-            if (Gamepad.all[0].leftStick.right.isPressed && Gamepad.all[0].rightTrigger.isPressed)
-            {
-                m_Anim.SetBool("IsBumpingRight", true);
-            }
-            else if (Gamepad.all[0].leftStick.left.isPressed && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
-            {
-                m_Anim.SetBool("IsBumpingLeft", true);
-            }
-            else
-            {
-                m_Anim.SetBool("IsBumpingRight", false);
-                m_Anim.SetBool("IsBumpingLeft", false);
-            }
+            // if (m_Model.transform.position.x > 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // {
+            //     m_Anim.SetBool("IsDivingRight", true);
+            // }
+            // else if (m_Model.transform.position.x < 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // {
+            //     m_Anim.SetBool("IsDivingLeft", true);
+            // }
+            // else
+            // {
+            //     m_Anim.SetBool("IsDivingRight", false);
+            //     m_Anim.SetBool("IsDivingLeft", false);
+            // }
         }
 
         if (Gamepad.all[0].rightStick.down.isPressed)
         {
-            if (Gamepad.all[0].leftStick.right.isPressed && Gamepad.all[0].rightTrigger.isPressed)
-            {
-                m_Anim.SetBool("IsJumpingRight", true);
-            }
-            else if (Gamepad.all[0].leftStick.left.isPressed && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
-            {
-                m_Anim.SetBool("IsJumpingLeft", true);
-            }
-            else
-            {
-                m_Anim.SetBool("IsJumpingRight", false);
-                m_Anim.SetBool("IsJumpingLeft", false);
-            }
+            m_HitForce = 7;
+            m_HitHeight = 9;
+
+            // if (m_Model.transform.position.x > 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // {
+            //     m_Anim.SetBool("IsBumpingRight", true);
+            // }
+            // else if (m_Model.transform.position.x < 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // {
+            //     m_Anim.SetBool("IsBumpingLeft", true);
+            // }
+            // else
+            // {
+            //     m_Anim.SetBool("IsBumpingRight", false);
+            //     m_Anim.SetBool("IsBumpingLeft", false);
+            // }
         }
 
+        if (Gamepad.all[0].rightStick.up.isPressed)
+        {
+            m_HitForce = 13;
+            m_HitHeight = 9;
+
+            // if (m_Model.transform.position.x > 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // {
+            //     m_Anim.SetBool("IsJumpingRight", true);
+            // }
+            // else if (m_Model.transform.position.x < 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // {
+            //     m_Anim.SetBool("IsJumpingLeft", true);
+            // }
+            // else
+            // {
+            //     m_Anim.SetBool("IsJumpingRight", false);
+            //     m_Anim.SetBool("IsJumpingLeft", false);
+            // }
+        }
+
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ball"))
+        {
+            m_CanHit = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ball"))
+        {
+            m_CanHit = false;
+        }
     }
 
     IEnumerator Wait()
