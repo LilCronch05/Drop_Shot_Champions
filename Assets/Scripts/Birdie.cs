@@ -11,7 +11,7 @@ public class Birdie : MonoBehaviour
     
     private bool m_CanHit;
     private CourtManager m_CourtZone;
-    private PlayerController m_PlayerHit;
+    private Player1Controller m_PlayerHit;
     private Vector3 m_HitDirection;
 
     // Start is called before the first frame update
@@ -49,7 +49,7 @@ public class Birdie : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             m_CanHit = true;
-            m_PlayerHit = other.gameObject.GetComponent<PlayerController>();
+            m_PlayerHit = other.gameObject.GetComponent<Player1Controller>();
         }
     }
 }

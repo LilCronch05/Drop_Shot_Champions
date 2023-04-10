@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class Player1Controller : MonoBehaviour
 {
     [SerializeField]
     private GameObject m_Model;
@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         m_MoveSpeed = 5;
-        
+
         // //Move the player in the direction they are facing
         Vector3 moveDirection = new Vector3(Gamepad.all[0].leftStick.ReadValue().x, 0, Gamepad.all[0].leftStick.ReadValue().y);
         moveDirection.Normalize();
