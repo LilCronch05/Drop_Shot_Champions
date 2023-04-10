@@ -5,52 +5,41 @@ using UnityEngine.InputSystem;
 
 public class Birdie : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject m_Model;
-    [SerializeField]
-    private float m_MoveSpeed;
-    
-    private bool m_CanHit;
-    private CourtManager m_CourtZone;
-    private Player1Controller m_PlayerHit;
-    private Vector3 m_HitDirection;
+    Vector3 m_StartPos;
+    GameManager m_GameManager;
+    [SerializeField] private GameObject m_Indicator;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        m_Indicator = GameObject.Find("Indicator");
+        m_GameManager = GetComponent<GameManager>();
+        m_StartPos = transform.position;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        Vector3 m_HitDirection = new Vector3(Gamepad.all[0].rightStick.ReadValue().x, 0, 1);
-        
-        if (m_CourtZone != null)
-        {
-            // if (m_CourtZone.m_HomeZones[0].GetComponent<Zone>().m_IsActive)
-            // {
-            //     m_HitDirection = m_PlayerHit.transform.position - transform.position;
-            //     transform.Translate(m_HitDirection * m_MoveSpeed * Time.deltaTime, Space.World);
-            // }
-        }
-
-        if (m_CanHit)
-        {
-            if (m_PlayerHit != null)
-            {
-                m_HitDirection = m_PlayerHit.transform.position - transform.position;
-                transform.Translate(m_HitDirection * m_MoveSpeed * Time.deltaTime, Space.World);
-            }
-        }
+        //make the indicator follow the birdie without moving up or down
+        m_Indicator.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.tag == "Player")
+        if (collision.transform.CompareTag("OutOfBounds"))
         {
-            m_CanHit = true;
-            m_PlayerHit = other.gameObject.GetComponent<Player1Controller>();
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            transform.position = m_StartPos;
+        }
+
+        if (collision.transform.CompareTag("Zone B"))
+        {
+            // Increase player 1 score
+            //m_GameManager.m_Score1++;
+        }
+
+        if (collision.transform.CompareTag("Zone A"))
+        {
+            // Increase player 2 score
+            //m_GameManager.m_Score2++;
         }
     }
 }
