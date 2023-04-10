@@ -22,10 +22,11 @@ public class Player2Controller : MonoBehaviour
         m_Anim = GetComponent<Animator>();
         for (int i = 0; i < Gamepad.all.Count; i++)
         {
+            //set player 2 to the second controller
             Debug.Log(Gamepad.all[i].name);
         }
 
-        m_Model = GameObject.Find("Player1");
+        m_Model = GameObject.Find("Player2");
     }
 
     // Update is called once per frame
