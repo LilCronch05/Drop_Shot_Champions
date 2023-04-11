@@ -42,8 +42,6 @@ public class Player1Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_MoveSpeed = 5;
-
         // //Move the player in the direction they are facing
         Vector3 moveDirection = new Vector3(Gamepad.all[0].leftStick.ReadValue().x, 0, Gamepad.all[0].leftStick.ReadValue().y);
         moveDirection.Normalize();
