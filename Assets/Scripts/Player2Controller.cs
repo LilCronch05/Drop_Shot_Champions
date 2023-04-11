@@ -20,13 +20,16 @@ public class Player2Controller : MonoBehaviour
     void Start()
     {
         m_Anim = GetComponent<Animator>();
+        
         for (int i = 0; i < Gamepad.all.Count; i++)
         {
-            //set player 2 to the second controller
-            Debug.Log(Gamepad.all[i].name);
+            //Gamepad 2 will control player 2
+            if (Gamepad.all[i] != Gamepad.all[1])
+            {
+                m_Model = GameObject.Find("Player2");
+            }
         }
-
-        m_Model = GameObject.Find("Player2");
+        
     }
 
     // Update is called once per frame
@@ -35,7 +38,7 @@ public class Player2Controller : MonoBehaviour
         m_MoveSpeed = 5;
 
         // //Move the player in the direction they are facing
-        Vector3 moveDirection = new Vector3(Gamepad.all[0].leftStick.ReadValue().x, 0, Gamepad.all[0].leftStick.ReadValue().y);
+        Vector3 moveDirection = new Vector3(-Gamepad.all[1].leftStick.ReadValue().x, 0, -Gamepad.all[1].leftStick.ReadValue().y);
         moveDirection.Normalize();
 
         transform.Translate(moveDirection * m_MoveSpeed * Time.deltaTime, Space.World);
@@ -49,11 +52,11 @@ public class Player2Controller : MonoBehaviour
 
         if (m_CanHit)
         {
-            if (Gamepad.all[0].rightTrigger.isPressed)
+            if (Gamepad.all[1].rightTrigger.isPressed)
             {
                 m_Hitting = true;
             }
-            else if (Gamepad.all[0].rightTrigger.isPressed == false)
+            else if (Gamepad.all[1].rightTrigger.isPressed == false)
             {
                 m_Hitting = false;
             }
@@ -61,14 +64,14 @@ public class Player2Controller : MonoBehaviour
             if (m_Hitting)
             {
                 Vector3 m_HitDirection = m_Birdie.position - transform.position;
-                m_Birdie.Translate(new Vector3(Gamepad.all[0].rightStick.ReadValue().x, 0, 0) * m_HitSpeed * Time.deltaTime, Space.World);
+                m_Birdie.Translate(new Vector3(Gamepad.all[1].rightStick.ReadValue().x, 0, 0) * m_HitSpeed * Time.deltaTime, Space.World);
                 m_Birdie.GetComponent<Rigidbody>().velocity = m_HitDirection.normalized * m_HitForce + new Vector3(0, m_HitHeight, 0);
 
             }
 
-            if ((Gamepad.all[0].rightStick.ReadValue().x != 0 || Gamepad.all[0].rightStick.ReadValue().y != 0) && !m_Hitting)
+            if ((Gamepad.all[1].rightStick.ReadValue().x != 0 || Gamepad.all[1].rightStick.ReadValue().y != 0) && !m_Hitting)
             {
-                m_Birdie.Translate(new Vector3(Gamepad.all[0].rightStick.ReadValue().x, 0, Gamepad.all[0].rightStick.ReadValue().y) * m_HitSpeed * Time.deltaTime, Space.World);
+                m_Birdie.Translate(new Vector3(Gamepad.all[1].rightStick.ReadValue().x, 0, Gamepad.all[1].rightStick.ReadValue().y) * m_HitSpeed * Time.deltaTime, Space.World);
             }
         }
 
@@ -76,7 +79,7 @@ public class Player2Controller : MonoBehaviour
 
 
         //ANIMATIONS
-        if (Gamepad.all[0].leftStick.ReadValue().x != 0 || Gamepad.all[0].leftStick.ReadValue().y != 0)
+        if (Gamepad.all[1].leftStick.ReadValue().x != 0 || Gamepad.all[1].leftStick.ReadValue().y != 0)
         {
             m_Anim.SetBool("IsMoving", true);
         }
@@ -85,7 +88,7 @@ public class Player2Controller : MonoBehaviour
             m_Anim.SetBool("IsMoving", false);
         }
 
-        if (Gamepad.all[0].leftStick.ReadValue().x == 0 || Gamepad.all[0].leftStick.ReadValue().y == 0)
+        if (Gamepad.all[1].leftStick.ReadValue().x == 0 || Gamepad.all[1].leftStick.ReadValue().y == 0)
         {
 
             m_Anim.SetBool("IsStill", true);
@@ -100,16 +103,16 @@ public class Player2Controller : MonoBehaviour
         //     m_Anim.SetBool("IsSwappingDirection", true);
         // }
 
-        if (Gamepad.all[0].rightStick.ReadValue().y == 0)
+        if (Gamepad.all[1].rightStick.ReadValue().y == 0)
         {
             m_HitForce = 10;
             m_HitHeight = 9;
 
-            // if (m_Model.transform.position.x > 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // if (m_Model.transform.position.x > 0 && Gamepad.all[1].rightTrigger.wasPressedThisFrame)
             // {
             //     m_Anim.SetBool("IsDivingRight", true);
             // }
-            // else if (m_Model.transform.position.x < 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // else if (m_Model.transform.position.x < 0 && Gamepad.all[1].rightTrigger.wasPressedThisFrame)
             // {
             //     m_Anim.SetBool("IsDivingLeft", true);
             // }
@@ -120,16 +123,16 @@ public class Player2Controller : MonoBehaviour
             // }
         }
 
-        if (Gamepad.all[0].rightStick.down.isPressed)
+        if (Gamepad.all[1].rightStick.down.isPressed)
         {
             m_HitForce = 7;
             m_HitHeight = 9;
 
-            // if (m_Model.transform.position.x > 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // if (m_Model.transform.position.x > 0 && Gamepad.all[1].rightTrigger.wasPressedThisFrame)
             // {
             //     m_Anim.SetBool("IsBumpingRight", true);
             // }
-            // else if (m_Model.transform.position.x < 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // else if (m_Model.transform.position.x < 0 && Gamepad.all[1].rightTrigger.wasPressedThisFrame)
             // {
             //     m_Anim.SetBool("IsBumpingLeft", true);
             // }
@@ -140,16 +143,16 @@ public class Player2Controller : MonoBehaviour
             // }
         }
 
-        if (Gamepad.all[0].rightStick.up.isPressed)
+        if (Gamepad.all[1].rightStick.up.isPressed)
         {
             m_HitForce = 13;
             m_HitHeight = 9;
 
-            // if (m_Model.transform.position.x > 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // if (m_Model.transform.position.x > 0 && Gamepad.all[1].rightTrigger.wasPressedThisFrame)
             // {
             //     m_Anim.SetBool("IsJumpingRight", true);
             // }
-            // else if (m_Model.transform.position.x < 0 && Gamepad.all[0].rightTrigger.wasPressedThisFrame)
+            // else if (m_Model.transform.position.x < 0 && Gamepad.all[1].rightTrigger.wasPressedThisFrame)
             // {
             //     m_Anim.SetBool("IsJumpingLeft", true);
             // }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < Gamepad.all.Count; i++)
+        {
+            Debug.Log(Gamepad.all[i].name);
+        }
+        
         m_Score1 = 0;
         m_Score2 = 0;
 

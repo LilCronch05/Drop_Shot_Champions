@@ -20,12 +20,23 @@ public class Player1Controller : MonoBehaviour
     void Start()
     {
         m_Anim = GetComponent<Animator>();
+        
         for (int i = 0; i < Gamepad.all.Count; i++)
         {
-            Debug.Log(Gamepad.all[i].name);
-        }
+            
+            //Gamepad 1 will control player 1
+            if (Gamepad.all[i] == Gamepad.all[0])
+            {
+                m_Model = GameObject.Find("Player1");
+            }
 
-        m_Model = GameObject.Find("Player1");
+            //Gamepad 2 will control player 2
+            if (Gamepad.all[i] != Gamepad.all[1])
+            {
+                m_Model = GameObject.Find("Player2");
+            }
+        }
+        
     }
 
     // Update is called once per frame
